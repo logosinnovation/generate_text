@@ -1,749 +1,733 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  <meta http-equiv="Content-Style-Type" content="text/css">
-  <title></title>
-  <meta name="Generator" content="Cocoa HTML Writer">
-  <meta name="CocoaVersion" content="2487.6">
-  <style type="text/css">
-    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
-    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Social Media Text Generator</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;600&family=Montserrat:wght@400;600&family=Roboto:wght@400;600&family=Open+Sans:wght@400;600&family=Lato:wght@400;600&family=Poppins:wght@400;600&family=Playfair+Display:wght@400;600&family=Merriweather:wght@400;600&family=Raleway:wght@400;600&family=Source+Sans+Pro:wght@400;600&family=Nunito:wght@400;600&family=Crimson+Text:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 350px 1fr;
+            gap: 30px;
+            height: calc(100vh - 40px);
+        }
+
+        .controls {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            overflow-y: auto;
+        }
+
+        .preview-section {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 30px;
+            font-size: 24px;
+            font-weight: 700;
+            text-align: center;
+        }
+
+        .control-group {
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e1e5e9;
+            border-radius: 10px;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+            font-family: inherit;
+        }
+
+        .color-input-group {
+            display: grid;
+            grid-template-columns: 1fr 60px;
+            gap: 10px;
+            align-items: end;
+        }
+
+        .color-preview {
+            width: 100%;
+            height: 42px;
+            border: 2px solid #e1e5e9;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .color-palette {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 6px;
+            margin-bottom: 10px;
+        }
+
+        .color-swatch {
+            width: 100%;
+            height: 30px;
+            border-radius: 6px;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: all 0.2s ease;
+        }
+
+        .color-swatch:hover {
+            transform: scale(1.1);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .color-swatch.selected {
+            border-color: #667eea;
+            box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.3);
+        }
+
+        .rgb-inputs {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            margin-top: 8px;
+        }
+
+        .rgb-inputs input {
+            text-align: center;
+            padding: 8px;
+            font-size: 12px;
+        }
+
+        .rgb-labels {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            margin-bottom: 5px;
+        }
+
+        .rgb-labels span {
+            text-align: center;
+            font-size: 12px;
+            color: #777;
+            font-weight: 500;
+        }
+
+        .canvas-container {
+            position: relative;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        canvas {
+            display: block;
+            max-width: 100%;
+            max-height: 60vh;
+            width: auto;
+            height: auto;
+        }
+
+        .format-info {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            text-align: center;
+            color: #666;
+            font-size: 14px;
+        }
+
+        .export-section {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        .format-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+
+        .format-button {
+            padding: 10px;
+            font-size: 12px;
+            text-align: center;
+        }
+
+        @media (max-width: 1024px) {
+            .container {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .controls {
+                order: 2;
+            }
+            
+            .preview-section {
+                order: 1;
+            }
+        }
+    </style>
 </head>
 <body>
-<p class="p1">&lt;!DOCTYPE html&gt;</p>
-<p class="p1">&lt;html lang="en"&gt;</p>
-<p class="p1">&lt;head&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;meta charset="UTF-8"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;title&gt;Social Media Text Generator&lt;/title&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;link rel="preconnect" href="https://fonts.googleapis.com"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;link rel="preconnect" href="https://fonts.gstatic.com" crossorigin&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;600&amp;family=Montserrat:wght@400;600&amp;family=Roboto:wght@400;600&amp;family=Open+Sans:wght@400;600&amp;family=Lato:wght@400;600&amp;family=Poppins:wght@400;600&amp;family=Playfair+Display:wght@400;600&amp;family=Merriweather:wght@400;600&amp;family=Raleway:wght@400;600&amp;family=Source+Sans+Pro:wght@400;600&amp;family=Nunito:wght@400;600&amp;family=Crimson+Text:wght@400;600&amp;display=swap" rel="stylesheet"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;style&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>* {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>margin: 0;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>padding: 0;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>box-sizing: border-box;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>body {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>min-height: 100vh;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>padding: 20px;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.container {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>max-width: 1400px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>margin: 0 auto;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>display: grid;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>grid-template-columns: 350px 1fr;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>gap: 30px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>height: calc(100vh - 40px);</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.controls {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>background: rgba(255, 255, 255, 0.95);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>backdrop-filter: blur(10px);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>border-radius: 20px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>padding: 30px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>overflow-y: auto;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.preview-section {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>background: rgba(255, 255, 255, 0.95);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>backdrop-filter: blur(10px);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>border-radius: 20px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>padding: 30px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>display: flex;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>flex-direction: column;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>align-items: center;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>justify-content: center;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>h1 {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>color: #333;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>margin-bottom: 30px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-size: 24px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-weight: 700;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>text-align: center;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.control-group {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>margin-bottom: 25px;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>label {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>display: block;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>margin-bottom: 8px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>color: #555;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-weight: 600;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-size: 14px;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>input, select, textarea {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>width: 100%;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>padding: 12px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>border: 2px solid #e1e5e9;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>border-radius: 10px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-size: 14px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>transition: all 0.3s ease;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>background: white;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>input:focus, select:focus, textarea:focus {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>outline: none;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>border-color: #667eea;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>textarea {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>resize: vertical;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>min-height: 100px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-family: inherit;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.color-input-group {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>display: grid;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>grid-template-columns: 1fr 60px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>gap: 10px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>align-items: end;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.color-preview {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>width: 100%;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>height: 42px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>border: 2px solid #e1e5e9;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>border-radius: 10px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>cursor: pointer;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>transition: all 0.3s ease;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.color-palette {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>display: grid;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>grid-template-columns: repeat(6, 1fr);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>gap: 6px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>margin-bottom: 10px;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.color-swatch {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>width: 100%;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>height: 30px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>border-radius: 6px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>cursor: pointer;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>border: 2px solid transparent;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>transition: all 0.2s ease;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.color-swatch:hover {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>transform: scale(1.1);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.color-swatch.selected {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>border-color: #667eea;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.3);</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.rgb-inputs {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>display: grid;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>grid-template-columns: repeat(3, 1fr);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>gap: 8px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>margin-top: 8px;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.rgb-inputs input {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>text-align: center;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>padding: 8px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-size: 12px;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.rgb-labels {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>display: grid;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>grid-template-columns: repeat(3, 1fr);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>gap: 8px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>margin-bottom: 5px;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.rgb-labels span {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>text-align: center;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-size: 12px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>color: #777;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-weight: 500;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.canvas-container {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>position: relative;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>border-radius: 15px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>overflow: hidden;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>margin-bottom: 20px;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>canvas {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>display: block;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>max-width: 100%;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>max-height: 60vh;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>width: auto;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>height: auto;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.format-info {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>background: #f8f9fa;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>padding: 15px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>border-radius: 10px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>margin-bottom: 20px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>text-align: center;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>color: #666;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-size: 14px;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.export-section {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>display: flex;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>gap: 15px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>flex-wrap: wrap;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>justify-content: center;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>button {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>color: white;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>border: none;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>padding: 12px 24px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>border-radius: 10px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-size: 14px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-weight: 600;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>cursor: pointer;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>transition: all 0.3s ease;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>button:hover {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>transform: translateY(-2px);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>button:active {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>transform: translateY(0);</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.format-grid {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>display: grid;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>grid-template-columns: repeat(2, 1fr);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>gap: 10px;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.format-button {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>padding: 10px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-size: 12px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>text-align: center;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>@media (max-width: 1024px) {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>.container {</p>
-<p class="p1"><span class="Apple-converted-space">                </span>grid-template-columns: 1fr;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>gap: 20px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>}</p>
-<p class="p2"><span class="Apple-converted-space">            </span></p>
-<p class="p1"><span class="Apple-converted-space">            </span>.controls {</p>
-<p class="p1"><span class="Apple-converted-space">                </span>order: 2;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>}</p>
-<p class="p2"><span class="Apple-converted-space">            </span></p>
-<p class="p1"><span class="Apple-converted-space">            </span>.preview-section {</p>
-<p class="p1"><span class="Apple-converted-space">                </span>order: 1;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>}</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;/style&gt;</p>
-<p class="p1">&lt;/head&gt;</p>
-<p class="p1">&lt;body&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="container"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="controls"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;h1&gt;Text Style Controls&lt;/h1&gt;</p>
-<p class="p2"><span class="Apple-converted-space">            </span></p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="control-group"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;label for="textContent"&gt;Text Content&lt;/label&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;textarea id="textContent" placeholder="Enter your text here..."&gt;Your awesome text goes here!&lt;/textarea&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="control-group"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;label for="fontFamily"&gt;Font Family&lt;/label&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;select id="fontFamily"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;option value="Arial" style="font-family: Arial;"&gt;Arial&lt;/option&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;option value="Helvetica" style="font-family: Helvetica;"&gt;Helvetica&lt;/option&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;option value="Georgia" style="font-family: Georgia;"&gt;Georgia&lt;/option&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;option value="Times New Roman" style="font-family: Times New Roman;"&gt;Times New Roman&lt;/option&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;option value="Courier New" style="font-family: Courier New;"&gt;Courier New&lt;/option&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;option value="Verdana" style="font-family: Verdana;"&gt;Verdana&lt;/option&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;option value="Impact" selected style="font-family: Impact;"&gt;Impact&lt;/option&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;option value="Trebuchet MS" style="font-family: Trebuchet MS;"&gt;Trebuchet MS&lt;/option&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;option value="Comic Sans MS" style="font-family: Comic Sans MS;"&gt;Comic Sans MS&lt;/option&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;option value="Palatino" style="font-family: Palatino;"&gt;Palatino&lt;/option&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;option value="Oswald" style="font-family: Oswald, sans-serif;"&gt;Oswald&lt;/option&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;option value="Montserrat" style="font-family: Montserrat, sans-serif;"&gt;Montserrat&lt;/option&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;option value="Roboto" style="font-family: Roboto, sans-serif;"&gt;Roboto&lt;/option&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;option value="Open Sans" style="font-family: Open Sans, sans-serif;"&gt;Open Sans&lt;/option&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;option value="Lato" style="font-family: Lato, sans-serif;"&gt;Lato&lt;/option&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;option value="Poppins" style="font-family: Poppins, sans-serif;"&gt;Poppins&lt;/option&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;option value="Playfair Display" style="font-family: Playfair Display, serif;"&gt;Playfair Display&lt;/option&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;option value="Merriweather" style="font-family: Merriweather, serif;"&gt;Merriweather&lt;/option&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;option value="Raleway" style="font-family: Raleway, sans-serif;"&gt;Raleway&lt;/option&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;option value="Source Sans Pro" style="font-family: Source Sans Pro, sans-serif;"&gt;Source Sans Pro&lt;/option&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;option value="Nunito" style="font-family: Nunito, sans-serif;"&gt;Nunito&lt;/option&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;option value="Crimson Text" style="font-family: Crimson Text, serif;"&gt;Crimson Text&lt;/option&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;/select&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="control-group"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;label for="fontSize"&gt;Font Size&lt;/label&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;input type="range" id="fontSize" min="20" max="200" value="60"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;div style="text-align: center; margin-top: 5px; color: #666;"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;span id="fontSizeValue"&gt;60px&lt;/span&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="control-group"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;label&gt;Text Color&lt;/label&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="color-palette" id="textColorPalette"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;!-- Colors will be populated by JavaScript --&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="color-input-group" style="margin-top: 10px;"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;input type="text" id="textColorHex" value="#FFFFFF" placeholder="#FFFFFF"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div class="color-preview" id="textColorPreview" style="background-color: #FFFFFF;"&gt;&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="rgb-labels"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;span&gt;R&lt;/span&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;span&gt;G&lt;/span&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;span&gt;B&lt;/span&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="rgb-inputs"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;input type="number" id="textR" min="0" max="255" value="255"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;input type="number" id="textG" min="0" max="255" value="255"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;input type="number" id="textB" min="0" max="255" value="255"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="control-group"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;label&gt;Background Color&lt;/label&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="color-palette" id="bgColorPalette"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;!-- Colors will be populated by JavaScript --&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="color-input-group" style="margin-top: 10px;"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;input type="text" id="bgColorHex" value="#1a1a1a" placeholder="#1a1a1a"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div class="color-preview" id="bgColorPreview" style="background-color: #1a1a1a;"&gt;&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="rgb-labels"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;span&gt;R&lt;/span&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;span&gt;G&lt;/span&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;span&gt;B&lt;/span&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="rgb-inputs"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;input type="number" id="bgR" min="0" max="255" value="26"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;input type="number" id="bgG" min="0" max="255" value="26"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;input type="number" id="bgB" min="0" max="255" value="26"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="control-group"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;label for="textAlign"&gt;Text Alignment&lt;/label&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;select id="textAlign"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;option value="left"&gt;Left&lt;/option&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;option value="center" selected&gt;Center&lt;/option&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;option value="right"&gt;Right&lt;/option&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;/select&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="control-group"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;label for="exportFormat"&gt;Export Format&lt;/label&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;select id="exportFormat"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;option value="1080x1080"&gt;Square - 1080x1080 (Instagram Post)&lt;/option&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;option value="1080x1350"&gt;Portrait - 1080x1350 (Instagram Story)&lt;/option&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;option value="1920x1080"&gt;Landscape - 1920x1080 (YouTube Thumbnail)&lt;/option&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;option value="1200x630"&gt;Facebook Cover - 1200x630&lt;/option&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;option value="1500x500"&gt;Twitter Header - 1500x500&lt;/option&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;option value="1200x1200"&gt;LinkedIn Post - 1200x1200&lt;/option&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;option value="1080x1920"&gt;TikTok/Reels - 1080x1920&lt;/option&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;option value="1280x720"&gt;HD Landscape - 1280x720&lt;/option&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;option value="800x800"&gt;Small Square - 800x800&lt;/option&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;option value="1600x900"&gt;Widescreen - 1600x900&lt;/option&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;option value="1024x1024"&gt;Medium Square - 1024x1024&lt;/option&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;option value="1920x1200"&gt;Desktop Wallpaper - 1920x1200&lt;/option&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;option value="820x312"&gt;Twitter Cover - 820x312&lt;/option&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;option value="1200x675"&gt;Blog Header - 1200x675&lt;/option&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;option value="2560x1440"&gt;4K Banner - 2560x1440&lt;/option&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;/select&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="preview-section"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="format-info"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;strong id="formatLabel"&gt;Square - 1080x1080 (Instagram Post)&lt;/strong&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
-<p class="p2"><span class="Apple-converted-space">            </span></p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="canvas-container"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;canvas id="textCanvas"&gt;&lt;/canvas&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="export-section"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="format-grid"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;button class="format-button" onclick="exportImage('png')"&gt;📱 Export PNG&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;button class="format-button" onclick="exportImage('jpeg')"&gt;🖼️ Export JPEG&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;div style="margin-top: 15px; text-align: center;"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;button onclick="copyToClipboard()" style="background: linear-gradient(135deg, #28a745 0%, #20c997 100%);"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>📋 Copy to Clipboard</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;div style="margin-top: 10px; text-align: center; font-size: 12px; color: #666;"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>Right-click canvas → "Save image as..." if export fails</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;script&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>const canvas = document.getElementById('textCanvas');</p>
-<p class="p1"><span class="Apple-converted-space">        </span>const ctx = canvas.getContext('2d');</p>
-<p class="p2"><span class="Apple-converted-space">        </span></p>
-<p class="p1"><span class="Apple-converted-space">        </span>// Format configurations</p>
-<p class="p1"><span class="Apple-converted-space">        </span>const formats = {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>'1080x1080': { width: 1080, height: 1080, label: 'Square - 1080x1080 (Instagram Post)' },</p>
-<p class="p1"><span class="Apple-converted-space">            </span>'1080x1350': { width: 1080, height: 1350, label: 'Portrait - 1080x1350 (Instagram Story)' },</p>
-<p class="p1"><span class="Apple-converted-space">            </span>'1920x1080': { width: 1920, height: 1080, label: 'Landscape - 1920x1080 (YouTube Thumbnail)' },</p>
-<p class="p1"><span class="Apple-converted-space">            </span>'1200x630': { width: 1200, height: 630, label: 'Facebook Cover - 1200x630' },</p>
-<p class="p1"><span class="Apple-converted-space">            </span>'1500x500': { width: 1500, height: 500, label: 'Twitter Header - 1500x500' },</p>
-<p class="p1"><span class="Apple-converted-space">            </span>'1200x1200': { width: 1200, height: 1200, label: 'LinkedIn Post - 1200x1200' },</p>
-<p class="p1"><span class="Apple-converted-space">            </span>'1080x1920': { width: 1080, height: 1920, label: 'TikTok/Reels - 1080x1920' },</p>
-<p class="p1"><span class="Apple-converted-space">            </span>'1280x720': { width: 1280, height: 720, label: 'HD Landscape - 1280x720' },</p>
-<p class="p1"><span class="Apple-converted-space">            </span>'800x800': { width: 800, height: 800, label: 'Small Square - 800x800' },</p>
-<p class="p1"><span class="Apple-converted-space">            </span>'1600x900': { width: 1600, height: 900, label: 'Widescreen - 1600x900' },</p>
-<p class="p1"><span class="Apple-converted-space">            </span>'1024x1024': { width: 1024, height: 1024, label: 'Medium Square - 1024x1024' },</p>
-<p class="p1"><span class="Apple-converted-space">            </span>'1920x1200': { width: 1920, height: 1200, label: 'Desktop Wallpaper - 1920x1200' },</p>
-<p class="p1"><span class="Apple-converted-space">            </span>'820x312': { width: 820, height: 312, label: 'Twitter Cover - 820x312' },</p>
-<p class="p1"><span class="Apple-converted-space">            </span>'1200x675': { width: 1200, height: 675, label: 'Blog Header - 1200x675' },</p>
-<p class="p1"><span class="Apple-converted-space">            </span>'2560x1440': { width: 2560, height: 1440, label: '4K Banner - 2560x1440' }</p>
-<p class="p1"><span class="Apple-converted-space">        </span>};</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>// Color palette (24 popular colors)</p>
-<p class="p1"><span class="Apple-converted-space">        </span>const colorPalette = [</p>
-<p class="p1"><span class="Apple-converted-space">            </span>'#FF0000', '#FF4500', '#FF8C00', '#FFD700', '#ADFF2F', '#00FF00',</p>
-<p class="p1"><span class="Apple-converted-space">            </span>'#00CED1', '#1E90FF', '#0000FF', '#8A2BE2', '#FF1493', '#FF69B4',</p>
-<p class="p1"><span class="Apple-converted-space">            </span>'#FFFFFF', '#F5F5F5', '#D3D3D3', '#808080', '#404040', '#000000',</p>
-<p class="p1"><span class="Apple-converted-space">            </span>'#8B4513', '#A0522D', '#CD853F', '#F4A460', '#DEB887', '#D2691E'</p>
-<p class="p1"><span class="Apple-converted-space">        </span>];</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>// Initialize</p>
-<p class="p1"><span class="Apple-converted-space">        </span>updateCanvas();</p>
-<p class="p1"><span class="Apple-converted-space">        </span>setupEventListeners();</p>
-<p class="p1"><span class="Apple-converted-space">        </span>createColorPalettes();</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>function createColorPalettes() {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>const textPalette = document.getElementById('textColorPalette');</p>
-<p class="p1"><span class="Apple-converted-space">            </span>const bgPalette = document.getElementById('bgColorPalette');</p>
-<p class="p2"><span class="Apple-converted-space">            </span></p>
-<p class="p1"><span class="Apple-converted-space">            </span>colorPalette.forEach(color =&gt; {</p>
-<p class="p1"><span class="Apple-converted-space">                </span>// Text color swatch</p>
-<p class="p1"><span class="Apple-converted-space">                </span>const textSwatch = document.createElement('div');</p>
-<p class="p1"><span class="Apple-converted-space">                </span>textSwatch.className = 'color-swatch';</p>
-<p class="p1"><span class="Apple-converted-space">                </span>textSwatch.style.backgroundColor = color;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>textSwatch.title = color;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>textSwatch.addEventListener('click', () =&gt; setColor('text', color));</p>
-<p class="p1"><span class="Apple-converted-space">                </span>textPalette.appendChild(textSwatch);</p>
-<p class="p2"><span class="Apple-converted-space">                </span></p>
-<p class="p1"><span class="Apple-converted-space">                </span>// Background color swatch</p>
-<p class="p1"><span class="Apple-converted-space">                </span>const bgSwatch = document.createElement('div');</p>
-<p class="p1"><span class="Apple-converted-space">                </span>bgSwatch.className = 'color-swatch';</p>
-<p class="p1"><span class="Apple-converted-space">                </span>bgSwatch.style.backgroundColor = color;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>bgSwatch.title = color;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>bgSwatch.addEventListener('click', () =&gt; setColor('bg', color));</p>
-<p class="p1"><span class="Apple-converted-space">                </span>bgPalette.appendChild(bgSwatch);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>});</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>function setColor(type, hexColor) {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>const rgb = hexToRgb(hexColor);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>if (!rgb) return;</p>
-<p class="p2"><span class="Apple-converted-space">            </span></p>
-<p class="p1"><span class="Apple-converted-space">            </span>document.getElementById(type + 'ColorHex').value = hexColor;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>document.getElementById(type + 'R').value = rgb.r;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>document.getElementById(type + 'G').value = rgb.g;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>document.getElementById(type + 'B').value = rgb.b;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>document.getElementById(type + 'ColorPreview').style.backgroundColor = hexColor;</p>
-<p class="p2"><span class="Apple-converted-space">            </span></p>
-<p class="p1"><span class="Apple-converted-space">            </span>// Update selected state</p>
-<p class="p1"><span class="Apple-converted-space">            </span>const palette = document.getElementById(type + 'ColorPalette');</p>
-<p class="p1"><span class="Apple-converted-space">            </span>palette.querySelectorAll('.color-swatch').forEach(swatch =&gt; {</p>
-<p class="p1"><span class="Apple-converted-space">                </span>swatch.classList.remove('selected');</p>
-<p class="p1"><span class="Apple-converted-space">                </span>if (swatch.style.backgroundColor === hexColor || rgbToHex(...swatch.style.backgroundColor.match(/\d+/g).map(Number)) === hexColor) {</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>swatch.classList.add('selected');</p>
-<p class="p1"><span class="Apple-converted-space">                </span>}</p>
-<p class="p1"><span class="Apple-converted-space">            </span>});</p>
-<p class="p2"><span class="Apple-converted-space">            </span></p>
-<p class="p1"><span class="Apple-converted-space">            </span>updateCanvas();</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>function setupEventListeners() {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>// Text content</p>
-<p class="p1"><span class="Apple-converted-space">            </span>document.getElementById('textContent').addEventListener('input', updateCanvas);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>document.getElementById('fontFamily').addEventListener('change', updateCanvas);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>document.getElementById('fontSize').addEventListener('input', function() {</p>
-<p class="p1"><span class="Apple-converted-space">                </span>document.getElementById('fontSizeValue').textContent = this.value + 'px';</p>
-<p class="p1"><span class="Apple-converted-space">                </span>updateCanvas();</p>
-<p class="p1"><span class="Apple-converted-space">            </span>});</p>
-<p class="p1"><span class="Apple-converted-space">            </span>document.getElementById('textAlign').addEventListener('change', updateCanvas);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>document.getElementById('exportFormat').addEventListener('change', function() {</p>
-<p class="p1"><span class="Apple-converted-space">                </span>document.getElementById('formatLabel').textContent = formats[this.value].label;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>updateCanvas();</p>
-<p class="p1"><span class="Apple-converted-space">            </span>});</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">            </span>// Text color controls</p>
-<p class="p1"><span class="Apple-converted-space">            </span>setupColorControls('text');</p>
-<p class="p1"><span class="Apple-converted-space">            </span>setupColorControls('bg');</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>function setupColorControls(type) {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>const hexInput = document.getElementById(type + 'ColorHex');</p>
-<p class="p1"><span class="Apple-converted-space">            </span>const preview = document.getElementById(type + 'ColorPreview');</p>
-<p class="p1"><span class="Apple-converted-space">            </span>const rInput = document.getElementById(type + 'R');</p>
-<p class="p1"><span class="Apple-converted-space">            </span>const gInput = document.getElementById(type + 'G');</p>
-<p class="p1"><span class="Apple-converted-space">            </span>const bInput = document.getElementById(type + 'B');</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">            </span>// Hex input change</p>
-<p class="p1"><span class="Apple-converted-space">            </span>hexInput.addEventListener('input', function() {</p>
-<p class="p1"><span class="Apple-converted-space">                </span>const hex = this.value;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>const rgb = hexToRgb(hex);</p>
-<p class="p1"><span class="Apple-converted-space">                </span>if (rgb) {</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>rInput.value = rgb.r;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>gInput.value = rgb.g;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>bInput.value = rgb.b;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>preview.style.backgroundColor = hex;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>updateCanvas();</p>
-<p class="p1"><span class="Apple-converted-space">                </span>}</p>
-<p class="p1"><span class="Apple-converted-space">            </span>});</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">            </span>// RGB inputs change</p>
-<p class="p1"><span class="Apple-converted-space">            </span>[rInput, gInput, bInput].forEach(input =&gt; {</p>
-<p class="p1"><span class="Apple-converted-space">                </span>input.addEventListener('input', function() {</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>const r = Math.max(0, Math.min(255, parseInt(rInput.value) || 0));</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>const g = Math.max(0, Math.min(255, parseInt(gInput.value) || 0));</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>const b = Math.max(0, Math.min(255, parseInt(bInput.value) || 0));</p>
-<p class="p2"><span class="Apple-converted-space">                    </span></p>
-<p class="p1"><span class="Apple-converted-space">                    </span>rInput.value = r;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>gInput.value = g;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>bInput.value = b;</p>
-<p class="p2"><span class="Apple-converted-space">                    </span></p>
-<p class="p1"><span class="Apple-converted-space">                    </span>const hex = rgbToHex(r, g, b);</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>hexInput.value = hex;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>preview.style.backgroundColor = hex;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>updateCanvas();</p>
-<p class="p1"><span class="Apple-converted-space">                </span>});</p>
-<p class="p1"><span class="Apple-converted-space">            </span>});</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">            </span>// Color preview click</p>
-<p class="p1"><span class="Apple-converted-space">            </span>preview.addEventListener('click', function() {</p>
-<p class="p1"><span class="Apple-converted-space">                </span>const colorPicker = document.createElement('input');</p>
-<p class="p1"><span class="Apple-converted-space">                </span>colorPicker.type = 'color';</p>
-<p class="p1"><span class="Apple-converted-space">                </span>colorPicker.value = hexInput.value;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>colorPicker.addEventListener('change', function() {</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>hexInput.value = this.value;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>const rgb = hexToRgb(this.value);</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>if (rgb) {</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>rInput.value = rgb.r;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>gInput.value = rgb.g;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>bInput.value = rgb.b;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>preview.style.backgroundColor = this.value;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>updateCanvas();</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">                </span>});</p>
-<p class="p1"><span class="Apple-converted-space">                </span>colorPicker.click();</p>
-<p class="p1"><span class="Apple-converted-space">            </span>});</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>function updateCanvas() {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>const format = document.getElementById('exportFormat').value;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>const { width, height } = formats[format];</p>
-<p class="p2"><span class="Apple-converted-space">            </span></p>
-<p class="p1"><span class="Apple-converted-space">            </span>canvas.width = width;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>canvas.height = height;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">            </span>// Get values</p>
-<p class="p1"><span class="Apple-converted-space">            </span>const text = document.getElementById('textContent').value;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>const fontFamily = document.getElementById('fontFamily').value;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>const fontSize = parseInt(document.getElementById('fontSize').value);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>const textAlign = document.getElementById('textAlign').value;</p>
-<p class="p2"><span class="Apple-converted-space">            </span></p>
-<p class="p1"><span class="Apple-converted-space">            </span>const bgR = parseInt(document.getElementById('bgR').value);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>const bgG = parseInt(document.getElementById('bgG').value);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>const bgB = parseInt(document.getElementById('bgB').value);</p>
-<p class="p2"><span class="Apple-converted-space">            </span></p>
-<p class="p1"><span class="Apple-converted-space">            </span>const textR = parseInt(document.getElementById('textR').value);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>const textG = parseInt(document.getElementById('textG').value);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>const textB = parseInt(document.getElementById('textB').value);</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">            </span>// Clear and fill background</p>
-<p class="p1"><span class="Apple-converted-space">            </span>ctx.fillStyle = `rgb(${bgR}, ${bgG}, ${bgB})`;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>ctx.fillRect(0, 0, width, height);</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">            </span>// Set text properties</p>
-<p class="p1"><span class="Apple-converted-space">            </span>ctx.fillStyle = `rgb(${textR}, ${textG}, ${textB})`;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>ctx.font = `${fontSize}px "${fontFamily}", sans-serif`;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>ctx.textBaseline = 'middle';</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">            </span>// Handle text wrapping and alignment</p>
-<p class="p1"><span class="Apple-converted-space">            </span>const maxWidth = width * 0.9; // Leave 10% padding</p>
-<p class="p1"><span class="Apple-converted-space">            </span>const lineHeight = fontSize * 1.2;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>const words = text.split(' ');</p>
-<p class="p1"><span class="Apple-converted-space">            </span>const lines = [];</p>
-<p class="p1"><span class="Apple-converted-space">            </span>let currentLine = '';</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">            </span>// Create wrapped lines</p>
-<p class="p1"><span class="Apple-converted-space">            </span>for (let word of words) {</p>
-<p class="p1"><span class="Apple-converted-space">                </span>const testLine = currentLine + (currentLine ? ' ' : '') + word;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>const metrics = ctx.measureText(testLine);</p>
-<p class="p2"><span class="Apple-converted-space">                </span></p>
-<p class="p1"><span class="Apple-converted-space">                </span>if (metrics.width &gt; maxWidth &amp;&amp; currentLine) {</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>lines.push(currentLine);</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>currentLine = word;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>} else {</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>currentLine = testLine;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>}</p>
-<p class="p1"><span class="Apple-converted-space">            </span>}</p>
-<p class="p1"><span class="Apple-converted-space">            </span>if (currentLine) lines.push(currentLine);</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">            </span>// Calculate total text height</p>
-<p class="p1"><span class="Apple-converted-space">            </span>const totalHeight = lines.length * lineHeight;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>const startY = (height - totalHeight) / 2 + lineHeight / 2;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">            </span>// Draw each line with proper alignment</p>
-<p class="p1"><span class="Apple-converted-space">            </span>lines.forEach((line, index) =&gt; {</p>
-<p class="p1"><span class="Apple-converted-space">                </span>const y = startY + (index * lineHeight);</p>
-<p class="p1"><span class="Apple-converted-space">                </span>let x;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">                </span>// Calculate x position based on alignment, but keep text block centered</p>
-<p class="p1"><span class="Apple-converted-space">                </span>const textWidth = ctx.measureText(line).width;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>const textBlockCenter = width / 2;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">                </span>switch (textAlign) {</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>case 'left':</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>x = textBlockCenter - (maxWidth / 2);</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>ctx.textAlign = 'left';</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>break;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>case 'right':</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>x = textBlockCenter + (maxWidth / 2);</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>ctx.textAlign = 'right';</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>break;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>default: // center</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>x = textBlockCenter;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>ctx.textAlign = 'center';</p>
-<p class="p1"><span class="Apple-converted-space">                </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">                </span>ctx.fillText(line, x, y);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>});</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>function exportImage(format) {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>try {</p>
-<p class="p1"><span class="Apple-converted-space">                </span>const formatName = document.getElementById('exportFormat').value;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>const mimeType = format === 'png' ? 'image/png' : 'image/jpeg';</p>
-<p class="p1"><span class="Apple-converted-space">                </span>const quality = format === 'jpeg' ? 0.95 : undefined;</p>
-<p class="p2"><span class="Apple-converted-space">                </span></p>
-<p class="p1"><span class="Apple-converted-space">                </span>// Create the image data</p>
-<p class="p1"><span class="Apple-converted-space">                </span>canvas.toBlob(function(blob) {</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>if (!blob) {</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>alert('Failed to generate image. Please try again.');</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>return;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>}</p>
-<p class="p2"><span class="Apple-converted-space">                    </span></p>
-<p class="p1"><span class="Apple-converted-space">                    </span>// Create download link</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>const url = URL.createObjectURL(blob);</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>const link = document.createElement('a');</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>link.href = url;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>link.download = `social-media-text-${formatName.replace('x', 'x')}.${format}`;</p>
-<p class="p2"><span class="Apple-converted-space">                    </span></p>
-<p class="p1"><span class="Apple-converted-space">                    </span>// Trigger download</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>document.body.appendChild(link);</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>link.click();</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>document.body.removeChild(link);</p>
-<p class="p2"><span class="Apple-converted-space">                    </span></p>
-<p class="p1"><span class="Apple-converted-space">                    </span>// Clean up</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>setTimeout(() =&gt; URL.revokeObjectURL(url), 100);</p>
-<p class="p2"><span class="Apple-converted-space">                    </span></p>
-<p class="p1"><span class="Apple-converted-space">                </span>}, mimeType, quality);</p>
-<p class="p2"><span class="Apple-converted-space">                </span></p>
-<p class="p1"><span class="Apple-converted-space">            </span>} catch (error) {</p>
-<p class="p1"><span class="Apple-converted-space">                </span>console.error('Export error:', error);</p>
-<p class="p2"><span class="Apple-converted-space">                </span></p>
-<p class="p1"><span class="Apple-converted-space">                </span>// Fallback method</p>
-<p class="p1"><span class="Apple-converted-space">                </span>try {</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>const formatName = document.getElementById('exportFormat').value;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>const mimeType = format === 'png' ? 'image/png' : 'image/jpeg';</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>const dataURL = canvas.toDataURL(mimeType, 0.95);</p>
-<p class="p2"><span class="Apple-converted-space">                    </span></p>
-<p class="p1"><span class="Apple-converted-space">                    </span>const link = document.createElement('a');</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>link.download = `social-media-text-${formatName}.${format}`;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>link.href = dataURL;</p>
-<p class="p2"><span class="Apple-converted-space">                    </span></p>
-<p class="p1"><span class="Apple-converted-space">                    </span>document.body.appendChild(link);</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>link.click();</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>document.body.removeChild(link);</p>
-<p class="p2"><span class="Apple-converted-space">                    </span></p>
-<p class="p1"><span class="Apple-converted-space">                </span>} catch (fallbackError) {</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>console.error('Fallback export error:', fallbackError);</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>alert('Export failed. Please try right-clicking the canvas and selecting "Save image as..."');</p>
-<p class="p1"><span class="Apple-converted-space">                </span>}</p>
-<p class="p1"><span class="Apple-converted-space">            </span>}</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>function hexToRgb(hex) {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>return result ? {</p>
-<p class="p1"><span class="Apple-converted-space">                </span>r: parseInt(result[1], 16),</p>
-<p class="p1"><span class="Apple-converted-space">                </span>g: parseInt(result[2], 16),</p>
-<p class="p1"><span class="Apple-converted-space">                </span>b: parseInt(result[3], 16)</p>
-<p class="p1"><span class="Apple-converted-space">            </span>} : null;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>function rgbToHex(r, g, b) {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>return "#" + ((1 &lt;&lt; 24) + (r &lt;&lt; 16) + (g &lt;&lt; 8) + b).toString(16).slice(1);</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>async function copyToClipboard() {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>try {</p>
-<p class="p1"><span class="Apple-converted-space">                </span>const blob = await new Promise(resolve =&gt; {</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>canvas.toBlob(resolve, 'image/png');</p>
-<p class="p1"><span class="Apple-converted-space">                </span>});</p>
-<p class="p2"><span class="Apple-converted-space">                </span></p>
-<p class="p1"><span class="Apple-converted-space">                </span>if (navigator.clipboard &amp;&amp; window.ClipboardItem) {</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>await navigator.clipboard.write([</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>new ClipboardItem({</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>'image/png': blob</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>})</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>]);</p>
-<p class="p2"><span class="Apple-converted-space">                    </span></p>
-<p class="p1"><span class="Apple-converted-space">                    </span>// Show success feedback</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>const button = event.target;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>const originalText = button.textContent;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>button.textContent = '✅ Copied!';</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>button.style.background = 'linear-gradient(135deg, #28a745 0%, #20c997 100%)';</p>
-<p class="p2"><span class="Apple-converted-space">                    </span></p>
-<p class="p1"><span class="Apple-converted-space">                    </span>setTimeout(() =&gt; {</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>button.textContent = originalText;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>button.style.background = 'linear-gradient(135deg, #28a745 0%, #20c997 100%)';</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>}, 2000);</p>
-<p class="p2"><span class="Apple-converted-space">                    </span></p>
-<p class="p1"><span class="Apple-converted-space">                </span>} else {</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>throw new Error('Clipboard API not supported');</p>
-<p class="p1"><span class="Apple-converted-space">                </span>}</p>
-<p class="p1"><span class="Apple-converted-space">            </span>} catch (error) {</p>
-<p class="p1"><span class="Apple-converted-space">                </span>console.error('Copy to clipboard failed:', error);</p>
-<p class="p1"><span class="Apple-converted-space">                </span>alert('Copy to clipboard not supported in this browser. Use the export buttons instead.');</p>
-<p class="p1"><span class="Apple-converted-space">            </span>}</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;/script&gt;</p>
-<p class="p1">&lt;/body&gt;</p>
-<p class="p1">&lt;/html&gt;</p>
+    <div class="container">
+        <div class="controls">
+            <h1>Text Style Controls</h1>
+            
+            <div class="control-group">
+                <label for="textContent">Text Content</label>
+                <textarea id="textContent" placeholder="Enter your text here...">Your awesome text goes here!</textarea>
+            </div>
+
+            <div class="control-group">
+                <label for="fontFamily">Font Family</label>
+                <select id="fontFamily">
+                    <option value="Arial" style="font-family: Arial;">Arial</option>
+                    <option value="Helvetica" style="font-family: Helvetica;">Helvetica</option>
+                    <option value="Georgia" style="font-family: Georgia;">Georgia</option>
+                    <option value="Times New Roman" style="font-family: Times New Roman;">Times New Roman</option>
+                    <option value="Courier New" style="font-family: Courier New;">Courier New</option>
+                    <option value="Verdana" style="font-family: Verdana;">Verdana</option>
+                    <option value="Impact" selected style="font-family: Impact;">Impact</option>
+                    <option value="Trebuchet MS" style="font-family: Trebuchet MS;">Trebuchet MS</option>
+                    <option value="Comic Sans MS" style="font-family: Comic Sans MS;">Comic Sans MS</option>
+                    <option value="Palatino" style="font-family: Palatino;">Palatino</option>
+                    <option value="Oswald" style="font-family: Oswald, sans-serif;">Oswald</option>
+                    <option value="Montserrat" style="font-family: Montserrat, sans-serif;">Montserrat</option>
+                    <option value="Roboto" style="font-family: Roboto, sans-serif;">Roboto</option>
+                    <option value="Open Sans" style="font-family: Open Sans, sans-serif;">Open Sans</option>
+                    <option value="Lato" style="font-family: Lato, sans-serif;">Lato</option>
+                    <option value="Poppins" style="font-family: Poppins, sans-serif;">Poppins</option>
+                    <option value="Playfair Display" style="font-family: Playfair Display, serif;">Playfair Display</option>
+                    <option value="Merriweather" style="font-family: Merriweather, serif;">Merriweather</option>
+                    <option value="Raleway" style="font-family: Raleway, sans-serif;">Raleway</option>
+                    <option value="Source Sans Pro" style="font-family: Source Sans Pro, sans-serif;">Source Sans Pro</option>
+                    <option value="Nunito" style="font-family: Nunito, sans-serif;">Nunito</option>
+                    <option value="Crimson Text" style="font-family: Crimson Text, serif;">Crimson Text</option>
+                </select>
+            </div>
+
+            <div class="control-group">
+                <label for="fontSize">Font Size</label>
+                <input type="range" id="fontSize" min="20" max="200" value="60">
+                <div style="text-align: center; margin-top: 5px; color: #666;">
+                    <span id="fontSizeValue">60px</span>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label>Text Color</label>
+                <div class="color-palette" id="textColorPalette">
+                    <!-- Colors will be populated by JavaScript -->
+                </div>
+                <div class="color-input-group" style="margin-top: 10px;">
+                    <input type="text" id="textColorHex" value="#FFFFFF" placeholder="#FFFFFF">
+                    <div class="color-preview" id="textColorPreview" style="background-color: #FFFFFF;"></div>
+                </div>
+                <div class="rgb-labels">
+                    <span>R</span>
+                    <span>G</span>
+                    <span>B</span>
+                </div>
+                <div class="rgb-inputs">
+                    <input type="number" id="textR" min="0" max="255" value="255">
+                    <input type="number" id="textG" min="0" max="255" value="255">
+                    <input type="number" id="textB" min="0" max="255" value="255">
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label>Background Color</label>
+                <div class="color-palette" id="bgColorPalette">
+                    <!-- Colors will be populated by JavaScript -->
+                </div>
+                <div class="color-input-group" style="margin-top: 10px;">
+                    <input type="text" id="bgColorHex" value="#1a1a1a" placeholder="#1a1a1a">
+                    <div class="color-preview" id="bgColorPreview" style="background-color: #1a1a1a;"></div>
+                </div>
+                <div class="rgb-labels">
+                    <span>R</span>
+                    <span>G</span>
+                    <span>B</span>
+                </div>
+                <div class="rgb-inputs">
+                    <input type="number" id="bgR" min="0" max="255" value="26">
+                    <input type="number" id="bgG" min="0" max="255" value="26">
+                    <input type="number" id="bgB" min="0" max="255" value="26">
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label for="textAlign">Text Alignment</label>
+                <select id="textAlign">
+                    <option value="left">Left</option>
+                    <option value="center" selected>Center</option>
+                    <option value="right">Right</option>
+                </select>
+            </div>
+
+            <div class="control-group">
+                <label for="exportFormat">Export Format</label>
+                <select id="exportFormat">
+                    <option value="1080x1080">Square - 1080x1080 (Instagram Post)</option>
+                    <option value="1080x1350">Portrait - 1080x1350 (Instagram Story)</option>
+                    <option value="1920x1080">Landscape - 1920x1080 (YouTube Thumbnail)</option>
+                    <option value="1200x630">Facebook Cover - 1200x630</option>
+                    <option value="1500x500">Twitter Header - 1500x500</option>
+                    <option value="1200x1200">LinkedIn Post - 1200x1200</option>
+                    <option value="1080x1920">TikTok/Reels - 1080x1920</option>
+                    <option value="1280x720">HD Landscape - 1280x720</option>
+                    <option value="800x800">Small Square - 800x800</option>
+                    <option value="1600x900">Widescreen - 1600x900</option>
+                    <option value="1024x1024">Medium Square - 1024x1024</option>
+                    <option value="1920x1200">Desktop Wallpaper - 1920x1200</option>
+                    <option value="820x312">Twitter Cover - 820x312</option>
+                    <option value="1200x675">Blog Header - 1200x675</option>
+                    <option value="2560x1440">4K Banner - 2560x1440</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="preview-section">
+            <div class="format-info">
+                <strong id="formatLabel">Square - 1080x1080 (Instagram Post)</strong>
+            </div>
+            
+            <div class="canvas-container">
+                <canvas id="textCanvas"></canvas>
+            </div>
+
+            <div class="export-section">
+                <div class="format-grid">
+                    <button class="format-button" onclick="exportImage('png')">📱 Export PNG</button>
+                    <button class="format-button" onclick="exportImage('jpeg')">🖼️ Export JPEG</button>
+                </div>
+                <div style="margin-top: 15px; text-align: center;">
+                    <button onclick="copyToClipboard()" style="background: linear-gradient(135deg, #28a745 0%, #20c997 100%);">
+                        📋 Copy to Clipboard
+                    </button>
+                </div>
+                <div style="margin-top: 10px; text-align: center; font-size: 12px; color: #666;">
+                    Right-click canvas → "Save image as..." if export fails
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('textCanvas');
+        const ctx = canvas.getContext('2d');
+        
+        // Format configurations
+        const formats = {
+            '1080x1080': { width: 1080, height: 1080, label: 'Square - 1080x1080 (Instagram Post)' },
+            '1080x1350': { width: 1080, height: 1350, label: 'Portrait - 1080x1350 (Instagram Story)' },
+            '1920x1080': { width: 1920, height: 1080, label: 'Landscape - 1920x1080 (YouTube Thumbnail)' },
+            '1200x630': { width: 1200, height: 630, label: 'Facebook Cover - 1200x630' },
+            '1500x500': { width: 1500, height: 500, label: 'Twitter Header - 1500x500' },
+            '1200x1200': { width: 1200, height: 1200, label: 'LinkedIn Post - 1200x1200' },
+            '1080x1920': { width: 1080, height: 1920, label: 'TikTok/Reels - 1080x1920' },
+            '1280x720': { width: 1280, height: 720, label: 'HD Landscape - 1280x720' },
+            '800x800': { width: 800, height: 800, label: 'Small Square - 800x800' },
+            '1600x900': { width: 1600, height: 900, label: 'Widescreen - 1600x900' },
+            '1024x1024': { width: 1024, height: 1024, label: 'Medium Square - 1024x1024' },
+            '1920x1200': { width: 1920, height: 1200, label: 'Desktop Wallpaper - 1920x1200' },
+            '820x312': { width: 820, height: 312, label: 'Twitter Cover - 820x312' },
+            '1200x675': { width: 1200, height: 675, label: 'Blog Header - 1200x675' },
+            '2560x1440': { width: 2560, height: 1440, label: '4K Banner - 2560x1440' }
+        };
+
+        // Color palette (24 popular colors)
+        const colorPalette = [
+            '#FF0000', '#FF4500', '#FF8C00', '#FFD700', '#ADFF2F', '#00FF00',
+            '#00CED1', '#1E90FF', '#0000FF', '#8A2BE2', '#FF1493', '#FF69B4',
+            '#FFFFFF', '#F5F5F5', '#D3D3D3', '#808080', '#404040', '#000000',
+            '#8B4513', '#A0522D', '#CD853F', '#F4A460', '#DEB887', '#D2691E'
+        ];
+
+        // Initialize
+        updateCanvas();
+        setupEventListeners();
+        createColorPalettes();
+
+        function createColorPalettes() {
+            const textPalette = document.getElementById('textColorPalette');
+            const bgPalette = document.getElementById('bgColorPalette');
+            
+            colorPalette.forEach(color => {
+                // Text color swatch
+                const textSwatch = document.createElement('div');
+                textSwatch.className = 'color-swatch';
+                textSwatch.style.backgroundColor = color;
+                textSwatch.title = color;
+                textSwatch.addEventListener('click', () => setColor('text', color));
+                textPalette.appendChild(textSwatch);
+                
+                // Background color swatch
+                const bgSwatch = document.createElement('div');
+                bgSwatch.className = 'color-swatch';
+                bgSwatch.style.backgroundColor = color;
+                bgSwatch.title = color;
+                bgSwatch.addEventListener('click', () => setColor('bg', color));
+                bgPalette.appendChild(bgSwatch);
+            });
+        }
+
+        function setColor(type, hexColor) {
+            const rgb = hexToRgb(hexColor);
+            if (!rgb) return;
+            
+            document.getElementById(type + 'ColorHex').value = hexColor;
+            document.getElementById(type + 'R').value = rgb.r;
+            document.getElementById(type + 'G').value = rgb.g;
+            document.getElementById(type + 'B').value = rgb.b;
+            document.getElementById(type + 'ColorPreview').style.backgroundColor = hexColor;
+            
+            // Update selected state
+            const palette = document.getElementById(type + 'ColorPalette');
+            palette.querySelectorAll('.color-swatch').forEach(swatch => {
+                swatch.classList.remove('selected');
+                if (swatch.style.backgroundColor === hexColor || rgbToHex(...swatch.style.backgroundColor.match(/\d+/g).map(Number)) === hexColor) {
+                    swatch.classList.add('selected');
+                }
+            });
+            
+            updateCanvas();
+        }
+
+        function setupEventListeners() {
+            // Text content
+            document.getElementById('textContent').addEventListener('input', updateCanvas);
+            document.getElementById('fontFamily').addEventListener('change', updateCanvas);
+            document.getElementById('fontSize').addEventListener('input', function() {
+                document.getElementById('fontSizeValue').textContent = this.value + 'px';
+                updateCanvas();
+            });
+            document.getElementById('textAlign').addEventListener('change', updateCanvas);
+            document.getElementById('exportFormat').addEventListener('change', function() {
+                document.getElementById('formatLabel').textContent = formats[this.value].label;
+                updateCanvas();
+            });
+
+            // Text color controls
+            setupColorControls('text');
+            setupColorControls('bg');
+        }
+
+        function setupColorControls(type) {
+            const hexInput = document.getElementById(type + 'ColorHex');
+            const preview = document.getElementById(type + 'ColorPreview');
+            const rInput = document.getElementById(type + 'R');
+            const gInput = document.getElementById(type + 'G');
+            const bInput = document.getElementById(type + 'B');
+
+            // Hex input change
+            hexInput.addEventListener('input', function() {
+                const hex = this.value;
+                const rgb = hexToRgb(hex);
+                if (rgb) {
+                    rInput.value = rgb.r;
+                    gInput.value = rgb.g;
+                    bInput.value = rgb.b;
+                    preview.style.backgroundColor = hex;
+                    updateCanvas();
+                }
+            });
+
+            // RGB inputs change
+            [rInput, gInput, bInput].forEach(input => {
+                input.addEventListener('input', function() {
+                    const r = Math.max(0, Math.min(255, parseInt(rInput.value) || 0));
+                    const g = Math.max(0, Math.min(255, parseInt(gInput.value) || 0));
+                    const b = Math.max(0, Math.min(255, parseInt(bInput.value) || 0));
+                    
+                    rInput.value = r;
+                    gInput.value = g;
+                    bInput.value = b;
+                    
+                    const hex = rgbToHex(r, g, b);
+                    hexInput.value = hex;
+                    preview.style.backgroundColor = hex;
+                    updateCanvas();
+                });
+            });
+
+            // Color preview click
+            preview.addEventListener('click', function() {
+                const colorPicker = document.createElement('input');
+                colorPicker.type = 'color';
+                colorПicker.value = hexInput.value;
+                colorPicker.addEventListener('change', function() {
+                    hexInput.value = this.value;
+                    const rgb = hexToRgb(this.value);
+                    if (rgb) {
+                        rInput.value = rgb.r;
+                        gInput.value = rgb.g;
+                        bInput.value = rgb.b;
+                        preview.style.backgroundColor = this.value;
+                        updateCanvas();
+                    }
+                });
+                colorPicker.click();
+            });
+        }
+
+        function updateCanvas() {
+            const format = document.getElementById('exportFormat').value;
+            const { width, height } = formats[format];
+            
+            canvas.width = width;
+            canvas.height = height;
+
+            // Get values
+            const text = document.getElementById('textContent').value;
+            const fontFamily = document.getElementById('fontFamily').value;
+            const fontSize = parseInt(document.getElementById('fontSize').value);
+            const textAlign = document.getElementById('textAlign').value;
+            
+            const bgR = parseInt(document.getElementById('bgR').value);
+            const bgG = parseInt(document.getElementById('bgG').value);
+            const bgB = parseInt(document.getElementById('bgB').value);
+            
+            const textR = parseInt(document.getElementById('textR').value);
+            const textG = parseInt(document.getElementById('textG').value);
+            const textB = parseInt(document.getElementById('textB').value);
+
+            // Clear and fill background
+            ctx.fillStyle = `rgb(${bgR}, ${bgG}, ${bgB})`;
+            ctx.fillRect(0, 0, width, height);
+
+            // Set text properties
+            ctx.fillStyle = `rgb(${textR}, ${textG}, ${textB})`;
+            ctx.font = `${fontSize}px "${fontFamily}", sans-serif`;
+            ctx.textBaseline = 'middle';
+
+            // Handle text wrapping and alignment
+            const maxWidth = width * 0.9; // Leave 10% padding
+            const lineHeight = fontSize * 1.2;
+            const words = text.split(' ');
+            const lines = [];
+            let currentLine = '';
+
+            // Create wrapped lines
+            for (let word of words) {
+                const testLine = currentLine + (currentLine ? ' ' : '') + word;
+                const metrics = ctx.measureText(testLine);
+                
+                if (metrics.width > maxWidth && currentLine) {
+                    lines.push(currentLine);
+                    currentLine = word;
+                } else {
+                    currentLine = testLine;
+                }
+            }
+            if (currentLine) lines.push(currentLine);
+
+            // Calculate total text height
+            const totalHeight = lines.length * lineHeight;
+            const startY = (height - totalHeight) / 2 + lineHeight / 2;
+
+            // Draw each line with proper alignment
+            lines.forEach((line, index) => {
+                const y = startY + (index * lineHeight);
+                let x;
+
+                // Calculate x position based on alignment, but keep text block centered
+                const textWidth = ctx.measureText(line).width;
+                const textBlockCenter = width / 2;
+
+                switch (textAlign) {
+                    case 'left':
+                        x = textBlockCenter - (maxWidth / 2);
+                        ctx.textAlign = 'left';
+                        break;
+                    case 'right':
+                        x = textBlockCenter + (maxWidth / 2);
+                        ctx.textAlign = 'right';
+                        break;
+                    default: // center
+                        x = textBlockCenter;
+                        ctx.textAlign = 'center';
+                }
+
+                ctx.fillText(line, x, y);
+            });
+        }
+
+        function exportImage(format) {
+            try {
+                const formatName = document.getElementById('exportFormat').value;
+                const mimeType = format === 'png' ? 'image/png' : 'image/jpeg';
+                const quality = format === 'jpeg' ? 0.95 : undefined;
+                
+                // Create the image data
+                canvas.toBlob(function(blob) {
+                    if (!blob) {
+                        alert('Failed to generate image. Please try again.');
+                        return;
+                    }
+                    
+                    // Create download link
+                    const url = URL.createObjectURL(blob);
+                    const link = document.createElement('a');
+                    link.href = url;
+                    link.download = `social-media-text-${formatName.replace('x', 'x')}.${format}`;
+                    
+                    // Trigger download
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                    
+                    // Clean up
+                    setTimeout(() => URL.revokeObjectURL(url), 100);
+                    
+                }, mimeType, quality);
+                
+            } catch (error) {
+                console.error('Export error:', error);
+                
+                // Fallback method
+                try {
+                    const formatName = document.getElementById('exportFormat').value;
+                    const mimeType = format === 'png' ? 'image/png' : 'image/jpeg';
+                    const dataURL = canvas.toDataURL(mimeType, 0.95);
+                    
+                    const link = document.createElement('a');
+                    link.download = `social-media-text-${formatName}.${format}`;
+                    link.href = dataURL;
+                    
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                    
+                } catch (fallbackError) {
+                    console.error('Fallback export error:', fallbackError);
+                    alert('Export failed. Please try right-clicking the canvas and selecting "Save image as..."');
+                }
+            }
+        }
+
+        function hexToRgb(hex) {
+            const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+            return result ? {
+                r: parseInt(result[1], 16),
+                g: parseInt(result[2], 16),
+                b: parseInt(result[3], 16)
+            } : null;
+        }
+
+        function rgbToHex(r, g, b) {
+            return "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
+        }
+
+        async function copyToClipboard() {
+            try {
+                const blob = await new Promise(resolve => {
+                    canvas.toBlob(resolve, 'image/png');
+                });
+                
+                if (navigator.clipboard && window.ClipboardItem) {
+                    await navigator.clipboard.write([
+                        new ClipboardItem({
+                            'image/png': blob
+                        })
+                    ]);
+                    
+                    // Show success feedback
+                    const button = event.target;
+                    const originalText = button.textContent;
+                    button.textContent = '✅ Copied!';
+                    button.style.background = 'linear-gradient(135deg, #28a745 0%, #20c997 100%)';
+                    
+                    setTimeout(() => {
+                        button.textContent = originalText;
+                        button.style.background = 'linear-gradient(135deg, #28a745 0%, #20c997 100%)';
+                    }, 2000);
+                    
+                } else {
+                    throw new Error('Clipboard API not supported');
+                }
+            } catch (error) {
+                console.error('Copy to clipboard failed:', error);
+                alert('Copy to clipboard not supported in this browser. Use the export buttons instead.');
+            }
+        }
+    </script>
 </body>
 </html>
