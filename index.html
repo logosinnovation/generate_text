@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Social Media Text Generator</title>
+    <title>TEXTFORGE | Social Media Text Generator</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;600&family=Montserrat:wght@400;600&family=Roboto:wght@400;600&family=Open+Sans:wght@400;600&family=Lato:wght@400;600&family=Poppins:wght@400;600&family=Playfair+Display:wght@400;600&family=Merriweather:wght@400;600&family=Raleway:wght@400;600&family=Source+Sans+Pro:wght@400;600&family=Nunito:wght@400;600&family=Crimson+Text:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=SF+Mono:wght@400;500;600&family=Oswald:wght@400;600&family=Montserrat:wght@400;600&family=Roboto:wght@400;600&family=Open+Sans:wght@400;600&family=Lato:wght@400;600&family=Poppins:wght@400;600&family=Playfair+Display:wght@400;600&family=Merriweather:wght@400;600&family=Raleway:wght@400;600&family=Source+Sans+Pro:wght@400;600&family=Nunito:wght@400;600&family=Crimson+Text:wght@400;600&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -15,379 +15,555 @@
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            padding: 20px;
+            font-family: 'JetBrains Mono', 'SF Mono', monospace;
+            background: #FFFFFF;
+            color: #000000;
+            font-size: 12px;
+            line-height: 1.4;
+            font-weight: 400;
         }
 
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
+        .app-container {
             display: grid;
-            grid-template-columns: 350px 1fr;
-            gap: 30px;
-            height: calc(100vh - 40px);
+            grid-template-columns: 360px 1fr;
+            height: 100vh;
+            border: 2px solid #000000;
         }
 
-        .controls {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 30px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        .sidebar {
+            background: #FFFFFF;
+            border-right: 2px solid #000000;
             overflow-y: auto;
         }
 
-        .preview-section {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 30px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
+        .sidebar::-webkit-scrollbar {
+            width: 12px;
         }
 
-        h1 {
-            color: #333;
-            margin-bottom: 30px;
-            font-size: 24px;
+        .sidebar::-webkit-scrollbar-track {
+            background: #FFFFFF;
+            border-left: 1px solid #000000;
+        }
+
+        .sidebar::-webkit-scrollbar-thumb {
+            background: #000000;
+        }
+
+        .header {
+            background: #000000;
+            color: #FFFFFF;
+            padding: 12px 16px;
+            border-bottom: 2px solid #000000;
             font-weight: 700;
-            text-align: center;
+            font-size: 14px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .section {
+            border-bottom: 1px solid #000000;
+        }
+
+        .section-header {
+            background: #000000;
+            color: #FFFFFF;
+            padding: 8px 16px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .section-content {
+            padding: 16px;
         }
 
         .control-group {
-            margin-bottom: 25px;
+            margin-bottom: 16px;
         }
 
-        label {
+        .control-group:last-child {
+            margin-bottom: 0;
+        }
+
+        .label {
             display: block;
-            margin-bottom: 8px;
-            color: #555;
+            margin-bottom: 4px;
+            font-size: 10px;
             font-weight: 600;
-            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #000000;
         }
 
-        input, select, textarea {
+        .input {
             width: 100%;
-            padding: 12px;
-            border: 2px solid #e1e5e9;
-            border-radius: 10px;
-            font-size: 14px;
-            transition: all 0.3s ease;
-            background: white;
-        }
-
-        input:focus, select:focus, textarea:focus {
+            background: #FFFFFF;
+            border: 1px solid #000000;
+            padding: 8px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            color: #000000;
             outline: none;
-            border-color: #667eea;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
         }
 
-        textarea {
+        .input:focus {
+            border: 2px solid #00FF00;
+            padding: 7px;
+        }
+
+        .textarea {
+            min-height: 80px;
             resize: vertical;
-            min-height: 100px;
-            font-family: inherit;
+            font-family: 'JetBrains Mono', monospace;
         }
 
-        .color-input-group {
-            display: grid;
-            grid-template-columns: 1fr 60px;
-            gap: 10px;
-            align-items: end;
-        }
-
-        .color-preview {
+        .select {
             width: 100%;
-            height: 42px;
-            border: 2px solid #e1e5e9;
-            border-radius: 10px;
-            cursor: pointer;
-            transition: all 0.3s ease;
+            background: #FFFFFF;
+            border: 1px solid #000000;
+            padding: 8px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            color: #000000;
+            outline: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000000' stroke-width='2' stroke-linecap='square' stroke-linejoin='miter'%3e%3cpolyline points='6,9 12,15 18,9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 8px center;
+            background-size: 12px;
+            padding-right: 32px;
         }
 
-        .color-palette {
+        .select:focus {
+            border: 2px solid #00FF00;
+            padding: 7px 31px 7px 7px;
+        }
+
+        .slider-container {
+            position: relative;
+            margin: 8px 0;
+        }
+
+        .slider {
+            width: 100%;
+            height: 20px;
+            background: #FFFFFF;
+            border: 1px solid #000000;
+            outline: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+        }
+
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 20px;
+            height: 20px;
+            background: #000000;
+            cursor: pointer;
+            border: none;
+        }
+
+        .slider::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            background: #000000;
+            cursor: pointer;
+            border: none;
+        }
+
+        .slider:focus::-webkit-slider-thumb {
+            background: #00FF00;
+        }
+
+        .slider:focus::-moz-range-thumb {
+            background: #00FF00;
+        }
+
+        .slider-value {
+            position: absolute;
+            right: 0;
+            top: -20px;
+            background: #000000;
+            color: #FFFFFF;
+            padding: 2px 6px;
+            font-size: 10px;
+            font-weight: 600;
+        }
+
+        .alignment-grid {
             display: grid;
-            grid-template-columns: repeat(6, 1fr);
-            gap: 6px;
-            margin-bottom: 10px;
+            grid-template-columns: repeat(3, 1fr);
+            border: 1px solid #000000;
+        }
+
+        .alignment-btn {
+            background: #FFFFFF;
+            border: none;
+            border-right: 1px solid #000000;
+            padding: 8px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+            cursor: pointer;
+            color: #000000;
+        }
+
+        .alignment-btn:last-child {
+            border-right: none;
+        }
+
+        .alignment-btn:hover {
+            background: #000000;
+            color: #FFFFFF;
+        }
+
+        .alignment-btn.active {
+            background: #00FF00;
+            color: #000000;
+        }
+
+        .color-grid {
+            display: grid;
+            grid-template-columns: repeat(8, 1fr);
+            border: 1px solid #000000;
+            margin-bottom: 12px;
         }
 
         .color-swatch {
-            width: 100%;
-            height: 30px;
-            border-radius: 6px;
+            aspect-ratio: 1;
+            border-right: 1px solid #000000;
+            border-bottom: 1px solid #000000;
             cursor: pointer;
-            border: 2px solid transparent;
-            transition: all 0.2s ease;
+            position: relative;
         }
 
-        .color-swatch:hover {
-            transform: scale(1.1);
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        .color-swatch:nth-child(8n) {
+            border-right: none;
         }
 
-        .color-swatch.selected {
-            border-color: #667eea;
-            box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.3);
+        .color-swatch:nth-child(n+17) {
+            border-bottom: none;
         }
 
-        .rgb-inputs {
+        .color-swatch.selected::after {
+            content: '█';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #00FF00;
+            font-size: 12px;
+            font-weight: 700;
+            text-shadow: 
+                -1px -1px 0 #000000,
+                1px -1px 0 #000000,
+                -1px 1px 0 #000000,
+                1px 1px 0 #000000;
+        }
+
+        .color-inputs {
+            display: grid;
+            grid-template-columns: 1fr 40px;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+
+        .color-preview {
+            border: 1px solid #000000;
+            cursor: pointer;
+        }
+
+        .rgb-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 8px;
-            margin-top: 8px;
+            gap: 4px;
         }
 
-        .rgb-inputs input {
+        .rgb-input {
             text-align: center;
-            padding: 8px;
-            font-size: 12px;
+            padding: 4px;
+            font-size: 10px;
         }
 
-        .rgb-labels {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 8px;
-            margin-bottom: 5px;
+        .workspace {
+            background: #FFFFFF;
+            display: flex;
+            flex-direction: column;
+            position: relative;
         }
 
-        .rgb-labels span {
-            text-align: center;
-            font-size: 12px;
-            color: #777;
-            font-weight: 500;
+        .workspace-header {
+            background: #000000;
+            color: #FFFFFF;
+            padding: 12px 16px;
+            border-bottom: 2px solid #000000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .format-info {
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .canvas-area {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+            background: #FFFFFF;
         }
 
         .canvas-container {
-            position: relative;
-            border-radius: 15px;
-            overflow: hidden;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
-            margin-bottom: 20px;
+            border: 2px solid #000000;
+            background: #FFFFFF;
         }
 
         canvas {
             display: block;
-            max-width: 100%;
-            max-height: 60vh;
+            max-width: calc(100vw - 400px);
+            max-height: calc(100vh - 200px);
             width: auto;
             height: auto;
         }
 
-        .format-info {
-            background: #f8f9fa;
-            padding: 15px;
-            border-radius: 10px;
-            margin-bottom: 20px;
-            text-align: center;
-            color: #666;
-            font-size: 14px;
-        }
-
-        .export-section {
+        .toolbar {
+            background: #000000;
+            border-top: 2px solid #000000;
+            padding: 12px 16px;
             display: flex;
-            gap: 15px;
-            flex-wrap: wrap;
-            justify-content: center;
+            gap: 2px;
         }
 
-        button {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border: none;
-            padding: 12px 24px;
-            border-radius: 10px;
-            font-size: 14px;
+        .btn {
+            background: #FFFFFF;
+            color: #000000;
+            border: 1px solid #000000;
+            padding: 8px 16px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
             font-weight: 600;
+            text-transform: uppercase;
             cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+            letter-spacing: 0.5px;
         }
 
-        button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+        .btn:hover {
+            background: #000000;
+            color: #FFFFFF;
         }
 
-        button:active {
-            transform: translateY(0);
+        .btn:active {
+            background: #00FF00;
+            color: #000000;
         }
 
-        .format-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 10px;
+        .btn.loading {
+            background: #00FF00;
+            color: #000000;
+            cursor: not-allowed;
         }
 
-        .format-button {
-            padding: 10px;
-            font-size: 12px;
-            text-align: center;
+        .status-bar {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: #000000;
+            color: #00FF00;
+            padding: 4px 16px;
+            font-size: 10px;
+            font-weight: 500;
+            font-family: 'JetBrains Mono', monospace;
+            border-top: 1px solid #00FF00;
         }
 
         @media (max-width: 1024px) {
-            .container {
+            .app-container {
+                grid-template-rows: 1fr auto;
                 grid-template-columns: 1fr;
-                gap: 20px;
             }
             
-            .controls {
-                order: 2;
+            .sidebar {
+                border-right: none;
+                border-top: 2px solid #000000;
+                max-height: 40vh;
+                grid-row: 2;
+                grid-column: 1;
+            }
+
+            .workspace {
+                grid-row: 1;
+                grid-column: 1;
             }
             
-            .preview-section {
-                order: 1;
+            canvas {
+                max-width: calc(100vw - 48px);
+                max-height: calc(60vh - 100px);
             }
+        }
+
+        .grid-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                linear-gradient(to right, rgba(0,0,0,0.03) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(0,0,0,0.03) 1px, transparent 1px);
+            background-size: 20px 20px;
+            pointer-events: none;
+            z-index: -1;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="controls">
-            <h1>Text Style Controls</h1>
+    <div class="grid-overlay"></div>
+    
+    <div class="app-container">
+        <aside class="sidebar">
+            <div class="header">TEXTFORGE</div>
             
-            <div class="control-group">
-                <label for="textContent">Text Content</label>
-                <textarea id="textContent" placeholder="Enter your text here...">Your awesome text goes here!</textarea>
-            </div>
-
-            <div class="control-group">
-                <label for="fontFamily">Font Family</label>
-                <select id="fontFamily">
-                    <option value="Arial" style="font-family: Arial;">Arial</option>
-                    <option value="Helvetica" style="font-family: Helvetica;">Helvetica</option>
-                    <option value="Georgia" style="font-family: Georgia;">Georgia</option>
-                    <option value="Times New Roman" style="font-family: Times New Roman;">Times New Roman</option>
-                    <option value="Courier New" style="font-family: Courier New;">Courier New</option>
-                    <option value="Verdana" style="font-family: Verdana;">Verdana</option>
-                    <option value="Impact" selected style="font-family: Impact;">Impact</option>
-                    <option value="Trebuchet MS" style="font-family: Trebuchet MS;">Trebuchet MS</option>
-                    <option value="Comic Sans MS" style="font-family: Comic Sans MS;">Comic Sans MS</option>
-                    <option value="Palatino" style="font-family: Palatino;">Palatino</option>
-                    <option value="Oswald" style="font-family: Oswald, sans-serif;">Oswald</option>
-                    <option value="Montserrat" style="font-family: Montserrat, sans-serif;">Montserrat</option>
-                    <option value="Roboto" style="font-family: Roboto, sans-serif;">Roboto</option>
-                    <option value="Open Sans" style="font-family: Open Sans, sans-serif;">Open Sans</option>
-                    <option value="Lato" style="font-family: Lato, sans-serif;">Lato</option>
-                    <option value="Poppins" style="font-family: Poppins, sans-serif;">Poppins</option>
-                    <option value="Playfair Display" style="font-family: Playfair Display, serif;">Playfair Display</option>
-                    <option value="Merriweather" style="font-family: Merriweather, serif;">Merriweather</option>
-                    <option value="Raleway" style="font-family: Raleway, sans-serif;">Raleway</option>
-                    <option value="Source Sans Pro" style="font-family: Source Sans Pro, sans-serif;">Source Sans Pro</option>
-                    <option value="Nunito" style="font-family: Nunito, sans-serif;">Nunito</option>
-                    <option value="Crimson Text" style="font-family: Crimson Text, serif;">Crimson Text</option>
-                </select>
-            </div>
-
-            <div class="control-group">
-                <label for="fontSize">Font Size</label>
-                <input type="range" id="fontSize" min="20" max="200" value="60">
-                <div style="text-align: center; margin-top: 5px; color: #666;">
-                    <span id="fontSizeValue">60px</span>
+            <div class="section">
+                <div class="section-header">INPUT</div>
+                <div class="section-content">
+                    <div class="control-group">
+                        <label class="label">TEXT_CONTENT</label>
+                        <textarea id="textContent" class="input textarea" placeholder="ENTER_TEXT_HERE">BRUTALIST DESIGN</textarea>
+                    </div>
                 </div>
             </div>
 
-            <div class="control-group">
-                <label>Text Color</label>
-                <div class="color-palette" id="textColorPalette">
-                    <!-- Colors will be populated by JavaScript -->
-                </div>
-                <div class="color-input-group" style="margin-top: 10px;">
-                    <input type="text" id="textColorHex" value="#FFFFFF" placeholder="#FFFFFF">
-                    <div class="color-preview" id="textColorPreview" style="background-color: #FFFFFF;"></div>
-                </div>
-                <div class="rgb-labels">
-                    <span>R</span>
-                    <span>G</span>
-                    <span>B</span>
-                </div>
-                <div class="rgb-inputs">
-                    <input type="number" id="textR" min="0" max="255" value="255">
-                    <input type="number" id="textG" min="0" max="255" value="255">
-                    <input type="number" id="textB" min="0" max="255" value="255">
+            <div class="section">
+                <div class="section-header">TYPOGRAPHY</div>
+                <div class="section-content">
+                    <div class="control-group">
+                        <label class="label">FONT_FAMILY</label>
+                        <select id="fontFamily" class="select">
+                            <option value="JetBrains Mono">JetBrains Mono</option>
+                            <option value="SF Mono">SF Mono</option>
+                            <option value="Courier New">Courier New</option>
+                            <option value="Arial">Arial</option>
+                            <option value="Helvetica">Helvetica</option>
+                            <option value="Georgia">Georgia</option>
+                            <option value="Times New Roman">Times New Roman</option>
+                            <option value="Verdana">Verdana</option>
+                            <option value="Impact" selected>Impact</option>
+                            <option value="Trebuchet MS">Trebuchet MS</option>
+                            <option value="Oswald">Oswald</option>
+                            <option value="Montserrat">Montserrat</option>
+                            <option value="Roboto">Roboto</option>
+                            <option value="Open Sans">Open Sans</option>
+                            <option value="Lato">Lato</option>
+                            <option value="Poppins">Poppins</option>
+                            <option value="Playfair Display">Playfair Display</option>
+                            <option value="Merriweather">Merriweather</option>
+                            <option value="Raleway">Raleway</option>
+                            <option value="Source Sans Pro">Source Sans Pro</option>
+                            <option value="Nunito">Nunito</option>
+                            <option value="Crimson Text">Crimson Text</option>
+                        </select>
+                    </div>
+                    <div class="control-group">
+                        <label class="label">FONT_SIZE</label>
+                        <div class="slider-container">
+                            <input type="range" id="fontSize" class="slider" min="20" max="200" value="72">
+                            <div class="slider-value" id="fontSizeValue">72PX</div>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="label">ALIGNMENT</label>
+                        <div class="alignment-grid">
+                            <button class="alignment-btn" data-align="left">LEFT</button>
+                            <button class="alignment-btn active" data-align="center">CENTER</button>
+                            <button class="alignment-btn" data-align="right">RIGHT</button>
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <div class="control-group">
-                <label>Background Color</label>
-                <div class="color-palette" id="bgColorPalette">
-                    <!-- Colors will be populated by JavaScript -->
-                </div>
-                <div class="color-input-group" style="margin-top: 10px;">
-                    <input type="text" id="bgColorHex" value="#1a1a1a" placeholder="#1a1a1a">
-                    <div class="color-preview" id="bgColorPreview" style="background-color: #1a1a1a;"></div>
-                </div>
-                <div class="rgb-labels">
-                    <span>R</span>
-                    <span>G</span>
-                    <span>B</span>
-                </div>
-                <div class="rgb-inputs">
-                    <input type="number" id="bgR" min="0" max="255" value="26">
-                    <input type="number" id="bgG" min="0" max="255" value="26">
-                    <input type="number" id="bgB" min="0" max="255" value="26">
+            <div class="section">
+                <div class="section-header">TEXT_COLOR</div>
+                <div class="section-content">
+                    <div class="color-grid" id="textColorPalette"></div>
+                    <div class="color-inputs">
+                        <input type="text" id="textColorHex" class="input" value="#000000" placeholder="#000000">
+                        <div class="color-preview" id="textColorPreview" style="background-color: #000000;"></div>
+                    </div>
+                    <div class="rgb-grid">
+                        <input type="number" id="textR" class="input rgb-input" min="0" max="255" value="0" placeholder="R">
+                        <input type="number" id="textG" class="input rgb-input" min="0" max="255" value="0" placeholder="G">
+                        <input type="number" id="textB" class="input rgb-input" min="0" max="255" value="0" placeholder="B">
+                    </div>
                 </div>
             </div>
 
-            <div class="control-group">
-                <label for="textAlign">Text Alignment</label>
-                <select id="textAlign">
-                    <option value="left">Left</option>
-                    <option value="center" selected>Center</option>
-                    <option value="right">Right</option>
-                </select>
+            <div class="section">
+                <div class="section-header">BG_COLOR</div>
+                <div class="section-content">
+                    <div class="color-grid" id="bgColorPalette"></div>
+                    <div class="color-inputs">
+                        <input type="text" id="bgColorHex" class="input" value="#FFFFFF" placeholder="#FFFFFF">
+                        <div class="color-preview" id="bgColorPreview" style="background-color: #FFFFFF;"></div>
+                    </div>
+                    <div class="rgb-grid">
+                        <input type="number" id="bgR" class="input rgb-input" min="0" max="255" value="255" placeholder="R">
+                        <input type="number" id="bgG" class="input rgb-input" min="0" max="255" value="255" placeholder="G">
+                        <input type="number" id="bgB" class="input rgb-input" min="0" max="255" value="255" placeholder="B">
+                    </div>
+                </div>
             </div>
+        </aside>
 
-            <div class="control-group">
-                <label for="exportFormat">Export Format</label>
-                <select id="exportFormat">
-                    <option value="1080x1080">Square - 1080x1080 (Instagram Post)</option>
-                    <option value="1080x1350">Portrait - 1080x1350 (Instagram Story)</option>
-                    <option value="1920x1080">Landscape - 1920x1080 (YouTube Thumbnail)</option>
-                    <option value="1200x630">Facebook Cover - 1200x630</option>
-                    <option value="1500x500">Twitter Header - 1500x500</option>
-                    <option value="1200x1200">LinkedIn Post - 1200x1200</option>
-                    <option value="1080x1920">TikTok/Reels - 1080x1920</option>
-                    <option value="1280x720">HD Landscape - 1280x720</option>
-                    <option value="800x800">Small Square - 800x800</option>
-                    <option value="1600x900">Widescreen - 1600x900</option>
-                    <option value="1024x1024">Medium Square - 1024x1024</option>
-                    <option value="1920x1200">Desktop Wallpaper - 1920x1200</option>
-                    <option value="820x312">Twitter Cover - 820x312</option>
-                    <option value="1200x675">Blog Header - 1200x675</option>
-                    <option value="2560x1440">4K Banner - 2560x1440</option>
-                </select>
-            </div>
-        </div>
-
-        <div class="preview-section">
-            <div class="format-info">
-                <strong id="formatLabel">Square - 1080x1080 (Instagram Post)</strong>
+        <main class="workspace">
+            <div class="workspace-header">
+                <div class="format-info" id="formatInfo">INSTAGRAM_POST_1080X1080</div>
+                <div style="font-size: 10px;">READY</div>
             </div>
             
-            <div class="canvas-container">
-                <canvas id="textCanvas"></canvas>
+            <div class="canvas-area">
+                <div class="canvas-container">
+                    <canvas id="textCanvas"></canvas>
+                </div>
             </div>
 
-            <div class="export-section">
-                <div class="format-grid">
-                    <button class="format-button" onclick="exportImage('png')">📱 Export PNG</button>
-                    <button class="format-button" onclick="exportImage('jpeg')">🖼️ Export JPEG</button>
-                </div>
-                <div style="margin-top: 15px; text-align: center;">
-                    <button onclick="copyToClipboard()" style="background: linear-gradient(135deg, #28a745 0%, #20c997 100%);">
-                        📋 Copy to Clipboard
-                    </button>
-                </div>
-                <div style="margin-top: 10px; text-align: center; font-size: 12px; color: #666;">
-                    Right-click canvas → "Save image as..." if export fails
-                </div>
+            <div class="toolbar">
+                <button class="btn" onclick="exportImage('png')">EXPORT_PNG</button>
+                <button class="btn" onclick="exportImage('jpeg')">EXPORT_JPEG</button>
+                <button class="btn" onclick="copyToClipboard()">COPY_CLIPBOARD</button>
+                <select id="exportFormat" class="select" style="margin-left: 16px; width: auto; min-width: 280px;">
+                    <option value="1080x1080">INSTAGRAM_POST_1080X1080</option>
+                    <option value="1080x1350">INSTAGRAM_STORY_1080X1350</option>
+                    <option value="1920x1080">YOUTUBE_THUMB_1920X1080</option>
+                    <option value="1200x630">FACEBOOK_COVER_1200X630</option>
+                    <option value="1500x500">TWITTER_HEADER_1500X500</option>
+                    <option value="1200x1200">LINKEDIN_POST_1200X1200</option>
+                    <option value="1080x1920">TIKTOK_REELS_1080X1920</option>
+                    <option value="1280x720">HD_LANDSCAPE_1280X720</option>
+                    <option value="800x800">SMALL_SQUARE_800X800</option>
+                    <option value="1600x900">WIDESCREEN_1600X900</option>
+                    <option value="1024x1024">MEDIUM_SQUARE_1024X1024</option>
+                    <option value="1920x1200">DESKTOP_WALL_1920X1200</option>
+                    <option value="820x312">TWITTER_COVER_820X312</option>
+                    <option value="1200x675">BLOG_HEADER_1200X675</option>
+                    <option value="2560x1440">4K_BANNER_2560X1440</option>
+                </select>
             </div>
-        </div>
+
+            <div class="status-bar">
+                TEXT_READY_FOR_EXPORT | AUTO_WRAP_ENABLED | BRUTALIST_MODE_ACTIVE
+            </div>
+        </main>
     </div>
 
     <script>
@@ -396,30 +572,31 @@
         
         // Format configurations
         const formats = {
-            '1080x1080': { width: 1080, height: 1080, label: 'Square - 1080x1080 (Instagram Post)' },
-            '1080x1350': { width: 1080, height: 1350, label: 'Portrait - 1080x1350 (Instagram Story)' },
-            '1920x1080': { width: 1920, height: 1080, label: 'Landscape - 1920x1080 (YouTube Thumbnail)' },
-            '1200x630': { width: 1200, height: 630, label: 'Facebook Cover - 1200x630' },
-            '1500x500': { width: 1500, height: 500, label: 'Twitter Header - 1500x500' },
-            '1200x1200': { width: 1200, height: 1200, label: 'LinkedIn Post - 1200x1200' },
-            '1080x1920': { width: 1080, height: 1920, label: 'TikTok/Reels - 1080x1920' },
-            '1280x720': { width: 1280, height: 720, label: 'HD Landscape - 1280x720' },
-            '800x800': { width: 800, height: 800, label: 'Small Square - 800x800' },
-            '1600x900': { width: 1600, height: 900, label: 'Widescreen - 1600x900' },
-            '1024x1024': { width: 1024, height: 1024, label: 'Medium Square - 1024x1024' },
-            '1920x1200': { width: 1920, height: 1200, label: 'Desktop Wallpaper - 1920x1200' },
-            '820x312': { width: 820, height: 312, label: 'Twitter Cover - 820x312' },
-            '1200x675': { width: 1200, height: 675, label: 'Blog Header - 1200x675' },
-            '2560x1440': { width: 2560, height: 1440, label: '4K Banner - 2560x1440' }
+            '1080x1080': { width: 1080, height: 1080, label: 'INSTAGRAM_POST_1080X1080' },
+            '1080x1350': { width: 1080, height: 1350, label: 'INSTAGRAM_STORY_1080X1350' },
+            '1920x1080': { width: 1920, height: 1080, label: 'YOUTUBE_THUMB_1920X1080' },
+            '1200x630': { width: 1200, height: 630, label: 'FACEBOOK_COVER_1200X630' },
+            '1500x500': { width: 1500, height: 500, label: 'TWITTER_HEADER_1500X500' },
+            '1200x1200': { width: 1200, height: 1200, label: 'LINKEDIN_POST_1200X1200' },
+            '1080x1920': { width: 1080, height: 1920, label: 'TIKTOK_REELS_1080X1920' },
+            '1280x720': { width: 1280, height: 720, label: 'HD_LANDSCAPE_1280X720' },
+            '800x800': { width: 800, height: 800, label: 'SMALL_SQUARE_800X800' },
+            '1600x900': { width: 1600, height: 900, label: 'WIDESCREEN_1600X900' },
+            '1024x1024': { width: 1024, height: 1024, label: 'MEDIUM_SQUARE_1024X1024' },
+            '1920x1200': { width: 1920, height: 1200, label: 'DESKTOP_WALL_1920X1200' },
+            '820x312': { width: 820, height: 312, label: 'TWITTER_COVER_820X312' },
+            '1200x675': { width: 1200, height: 675, label: 'BLOG_HEADER_1200X675' },
+            '2560x1440': { width: 2560, height: 1440, label: '4K_BANNER_2560X1440' }
         };
 
-        // Color palette (24 popular colors)
+        // Brutalist color palette - high contrast only
         const colorPalette = [
-            '#FF0000', '#FF4500', '#FF8C00', '#FFD700', '#ADFF2F', '#00FF00',
-            '#00CED1', '#1E90FF', '#0000FF', '#8A2BE2', '#FF1493', '#FF69B4',
-            '#FFFFFF', '#F5F5F5', '#D3D3D3', '#808080', '#404040', '#000000',
-            '#8B4513', '#A0522D', '#CD853F', '#F4A460', '#DEB887', '#D2691E'
+            '#000000', '#FFFFFF', '#FF0000', '#00FF00', '#0000FF', '#FFFF00', '#FF00FF', '#00FFFF',
+            '#800000', '#808080', '#008000', '#800080', '#808000', '#000080', '#C0C0C0', '#404040',
+            '#FF8000', '#8000FF', '#FF0080', '#80FF00', '#0080FF', '#8080FF', '#FF8080', '#80FF80'
         ];
+
+        let currentAlignment = 'center';
 
         // Initialize
         updateCanvas();
@@ -463,10 +640,18 @@
             const palette = document.getElementById(type + 'ColorPalette');
             palette.querySelectorAll('.color-swatch').forEach(swatch => {
                 swatch.classList.remove('selected');
-                if (swatch.style.backgroundColor === hexColor || rgbToHex(...swatch.style.backgroundColor.match(/\d+/g).map(Number)) === hexColor) {
-                    swatch.classList.add('selected');
-                }
             });
+            
+            const matchingSwatch = Array.from(palette.querySelectorAll('.color-swatch'))
+                .find(swatch => {
+                    const swatchColor = swatch.style.backgroundColor;
+                    return swatchColor === hexColor || 
+                           rgbToHex(...(swatchColor.match(/\d+/g) || [])) === hexColor;
+                });
+            
+            if (matchingSwatch) {
+                matchingSwatch.classList.add('selected');
+            }
             
             updateCanvas();
         }
@@ -475,17 +660,31 @@
             // Text content
             document.getElementById('textContent').addEventListener('input', updateCanvas);
             document.getElementById('fontFamily').addEventListener('change', updateCanvas);
-            document.getElementById('fontSize').addEventListener('input', function() {
-                document.getElementById('fontSizeValue').textContent = this.value + 'px';
-                updateCanvas();
-            });
-            document.getElementById('textAlign').addEventListener('change', updateCanvas);
-            document.getElementById('exportFormat').addEventListener('change', function() {
-                document.getElementById('formatLabel').textContent = formats[this.value].label;
+            
+            // Font size slider
+            const fontSizeSlider = document.getElementById('fontSize');
+            fontSizeSlider.addEventListener('input', function() {
+                document.getElementById('fontSizeValue').textContent = this.value + 'PX';
                 updateCanvas();
             });
 
-            // Text color controls
+            // Alignment buttons
+            document.querySelectorAll('.alignment-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    document.querySelectorAll('.alignment-btn').forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    currentAlignment = this.dataset.align;
+                    updateCanvas();
+                });
+            });
+
+            // Export format
+            document.getElementById('exportFormat').addEventListener('change', function() {
+                document.getElementById('formatInfo').textContent = formats[this.value].label;
+                updateCanvas();
+            });
+
+            // Color controls
             setupColorControls('text');
             setupColorControls('bg');
         }
@@ -532,7 +731,7 @@
             preview.addEventListener('click', function() {
                 const colorPicker = document.createElement('input');
                 colorPicker.type = 'color';
-                colorПicker.value = hexInput.value;
+                colorPicker.value = hexInput.value;
                 colorPicker.addEventListener('change', function() {
                     hexInput.value = this.value;
                     const rgb = hexToRgb(this.value);
@@ -559,7 +758,6 @@
             const text = document.getElementById('textContent').value;
             const fontFamily = document.getElementById('fontFamily').value;
             const fontSize = parseInt(document.getElementById('fontSize').value);
-            const textAlign = document.getElementById('textAlign').value;
             
             const bgR = parseInt(document.getElementById('bgR').value);
             const bgG = parseInt(document.getElementById('bgG').value);
@@ -575,7 +773,7 @@
 
             // Set text properties
             ctx.fillStyle = `rgb(${textR}, ${textG}, ${textB})`;
-            ctx.font = `${fontSize}px "${fontFamily}", sans-serif`;
+            ctx.font = `${fontSize}px "${fontFamily}", monospace`;
             ctx.textBaseline = 'middle';
 
             // Handle text wrapping and alignment
@@ -609,10 +807,9 @@
                 let x;
 
                 // Calculate x position based on alignment, but keep text block centered
-                const textWidth = ctx.measureText(line).width;
                 const textBlockCenter = width / 2;
 
-                switch (textAlign) {
+                switch (currentAlignment) {
                     case 'left':
                         x = textBlockCenter - (maxWidth / 2);
                         ctx.textAlign = 'left';
@@ -631,6 +828,13 @@
         }
 
         function exportImage(format) {
+            const button = event.target;
+            const originalText = button.textContent;
+            
+            // Show loading state
+            button.textContent = 'PROCESSING...';
+            button.classList.add('loading');
+            
             try {
                 const formatName = document.getElementById('exportFormat').value;
                 const mimeType = format === 'png' ? 'image/png' : 'image/jpeg';
@@ -639,7 +843,9 @@
                 // Create the image data
                 canvas.toBlob(function(blob) {
                     if (!blob) {
-                        alert('Failed to generate image. Please try again.');
+                        alert('EXPORT_FAILED');
+                        button.textContent = originalText;
+                        button.classList.remove('loading');
                         return;
                     }
                     
@@ -647,7 +853,7 @@
                     const url = URL.createObjectURL(blob);
                     const link = document.createElement('a');
                     link.href = url;
-                    link.download = `social-media-text-${formatName.replace('x', 'x')}.${format}`;
+                    link.download = `TEXTFORGE_${formatName.replace('x', 'X')}.${format.toUpperCase()}`;
                     
                     // Trigger download
                     document.body.appendChild(link);
@@ -657,10 +863,19 @@
                     // Clean up
                     setTimeout(() => URL.revokeObjectURL(url), 100);
                     
+                    // Reset button
+                    button.textContent = 'EXPORTED';
+                    setTimeout(() => {
+                        button.textContent = originalText;
+                        button.classList.remove('loading');
+                    }, 1000);
+                    
                 }, mimeType, quality);
                 
             } catch (error) {
                 console.error('Export error:', error);
+                button.textContent = originalText;
+                button.classList.remove('loading');
                 
                 // Fallback method
                 try {
@@ -669,7 +884,7 @@
                     const dataURL = canvas.toDataURL(mimeType, 0.95);
                     
                     const link = document.createElement('a');
-                    link.download = `social-media-text-${formatName}.${format}`;
+                    link.download = `TEXTFORGE_${formatName}.${format.toUpperCase()}`;
                     link.href = dataURL;
                     
                     document.body.appendChild(link);
@@ -678,8 +893,48 @@
                     
                 } catch (fallbackError) {
                     console.error('Fallback export error:', fallbackError);
-                    alert('Export failed. Please try right-clicking the canvas and selecting "Save image as..."');
+                    alert('EXPORT_FAILED_TERMINAL_ERROR');
                 }
+            }
+        }
+
+        async function copyToClipboard() {
+            const button = event.target;
+            const originalText = button.textContent;
+            
+            try {
+                button.textContent = 'COPYING...';
+                button.classList.add('loading');
+                
+                const blob = await new Promise(resolve => {
+                    canvas.toBlob(resolve, 'image/png');
+                });
+                
+                if (navigator.clipboard && window.ClipboardItem) {
+                    await navigator.clipboard.write([
+                        new ClipboardItem({
+                            'image/png': blob
+                        })
+                    ]);
+                    
+                    // Show success feedback
+                    button.textContent = 'COPIED_TO_BUFFER';
+                    
+                    setTimeout(() => {
+                        button.textContent = originalText;
+                        button.classList.remove('loading');
+                    }, 1000);
+                    
+                } else {
+                    throw new Error('CLIPBOARD_API_NOT_SUPPORTED');
+                }
+            } catch (error) {
+                console.error('Copy to clipboard failed:', error);
+                button.textContent = 'CLIPBOARD_ERROR';
+                setTimeout(() => {
+                    button.textContent = originalText;
+                    button.classList.remove('loading');
+                }, 1000);
             }
         }
 
@@ -696,38 +951,26 @@
             return "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
         }
 
-        async function copyToClipboard() {
-            try {
-                const blob = await new Promise(resolve => {
-                    canvas.toBlob(resolve, 'image/png');
-                });
-                
-                if (navigator.clipboard && window.ClipboardItem) {
-                    await navigator.clipboard.write([
-                        new ClipboardItem({
-                            'image/png': blob
-                        })
-                    ]);
-                    
-                    // Show success feedback
-                    const button = event.target;
-                    const originalText = button.textContent;
-                    button.textContent = '✅ Copied!';
-                    button.style.background = 'linear-gradient(135deg, #28a745 0%, #20c997 100%)';
-                    
-                    setTimeout(() => {
-                        button.textContent = originalText;
-                        button.style.background = 'linear-gradient(135deg, #28a745 0%, #20c997 100%)';
-                    }, 2000);
-                    
-                } else {
-                    throw new Error('Clipboard API not supported');
-                }
-            } catch (error) {
-                console.error('Copy to clipboard failed:', error);
-                alert('Copy to clipboard not supported in this browser. Use the export buttons instead.');
-            }
-        }
+        // Initialize with default colors
+        setTimeout(() => {
+            setColor('text', '#000000');
+            setColor('bg', '#FFFFFF');
+        }, 100);
+
+        // Update status bar periodically
+        setInterval(() => {
+            const statusBar = document.querySelector('.status-bar');
+            const timestamp = new Date().toLocaleTimeString('en-US', { 
+                hour12: false, 
+                hour: '2-digit', 
+                minute: '2-digit', 
+                second: '2-digit' 
+            });
+            const format = document.getElementById('exportFormat').value;
+            const textLength = document.getElementById('textContent').value.length;
+            
+            statusBar.textContent = `SYS_TIME:${timestamp} | FORMAT:${format} | TEXT_LENGTH:${textLength} | STATUS:READY`;
+        }, 1000);
     </script>
 </body>
 </html>
